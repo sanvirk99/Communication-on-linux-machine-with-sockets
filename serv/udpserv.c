@@ -102,6 +102,7 @@ void *sendTx(void *xata)
 }
 
 // https://www.includehelp.com/c-programs/get-ip-address-in-linux.aspx
+//enp input required //is their a better method 
 struct sockaddr_in *localIP()
 {
 
@@ -177,7 +178,8 @@ int main(int argc, char **argv)
   memset(&si_me, '\0', sizeof(si_me));
   si_me.sin_family = AF_INET;
   si_me.sin_port = htons(port);
-  si_me.sin_addr.s_addr = localIP()->sin_addr.s_addr;
+  //si_me.sin_addr.s_addr = localIP()->sin_addr.s_addr;
+  si_me.sin_addr.s_addr =htonl(INADDR_ANY) ;
 
   bind(sockfd, (struct sockaddr *)&si_me, sizeof(si_me));
   addr_size = sizeof(si_other);
