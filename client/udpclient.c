@@ -71,7 +71,7 @@ int main(int argc,char** argv){
 
   serverAddr.sin_family = AF_INET;
   serverAddr.sin_port = htons(port_ser);
-  serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+  serverAddr.sin_addr.s_addr = getIP(server_name)->sin_addr.s_addr;
 
   strcpy(buffer, "Hello Server\n");
   sendto(sockfd, buffer, 1024, 0, (struct sockaddr*)&serverAddr, sizeof(serverAddr));
@@ -84,7 +84,7 @@ int main(int argc,char** argv){
   memset(&si_me, '\0', sizeof(si_me));
   si_me.sin_family = AF_INET;
   si_me.sin_port = htons(port);
-  si_me.sin_addr.s_addr =  getIP(server_name)->sin_addr.s_addr;
+  si_me.sin_addr.s_addr =  inet_addr("142.58.15.230");
 
   bind(new_soc, (struct sockaddr*)&si_me, sizeof(si_me));
 
