@@ -84,7 +84,7 @@ int main(int argc,char** argv){
   memset(&si_me, '\0', sizeof(si_me));
   si_me.sin_family = AF_INET;
   si_me.sin_port = htons(port);
-  si_me.sin_addr.s_addr =  inet_addr("142.58.15.230");
+  si_me.sin_addr.s_addr =  htonl(INADDR_ANY);
 
   bind(new_soc, (struct sockaddr*)&si_me, sizeof(si_me));
 
