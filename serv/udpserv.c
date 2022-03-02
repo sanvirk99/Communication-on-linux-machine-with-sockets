@@ -17,18 +17,20 @@
 #include <net/if.h>
 
 //modules
+#include "functions.h"
 #include "console.h"
+
 
 #define MSG_MAX_LEN 1024
 #define PORT 22110
 
-typedef struct
-{
-  int port;
-  int port_other;
-  int sockfd;
-  char *name;
-} _process_data;
+// typedef struct
+// {
+//   int port;
+//   int port_other;
+//   int sockfd;
+//   char *name;
+// } _process_data;
 
 
 
@@ -49,9 +51,9 @@ int main(int argc, char **argv)
 {
   //mutex locks distrubuted here
   //test1(argc,argv);
-  //threads(argc,argv);
+  threads(argc,argv);
 
-  threads_user();
+  //threads_user();
  
   
 }
@@ -66,9 +68,11 @@ int main(int argc, char **argv)
 void threads_user(){
 
   
-  console_init();
+  //console_init();
 
-  console_wait();
+  //console_wait();
+
+
 
 
 }
@@ -99,6 +103,8 @@ void threads(int argc, char** argv){
   recTx.sockfd=sockfd;
   recTx.port_other=port_other;
   recTx.name=other_name;
+
+  //call recieve fucntion here
   pthread_create(&threadPID,NULL,recieveTx,&recTx);
 
   pthread_create(&threadSD,NULL,sendTx,&recTx);
@@ -237,24 +243,24 @@ void test1(int argc,char **argv){
 
 
 //can be modiefied to iclude port number but will need to be testes
-struct sockaddr_in *getIP(char *peer_name)
-{
+// struct sockaddr_in *getIP(char *peer_name)
+// {
 
-  struct addrinfo *res;
-  char *peeraddr;
-  struct sockaddr_in *saddr;
+//   struct addrinfo *res;
+//   char *peeraddr;
+//   struct sockaddr_in *saddr;
 
-  if (0 != getaddrinfo(peer_name, NULL, NULL, &res))
-  {
-    fprintf(stderr, "Error in resolving peer_name %s\n", peer_name);
-    exit(1);
-  }
+//   if (0 != getaddrinfo(peer_name, NULL, NULL, &res))
+//   {
+//     fprintf(stderr, "Error in resolving peer_name %s\n", peer_name);
+//     exit(1);
+//   }
 
-  saddr = (struct sockaddr_in *)res->ai_addr;
-  peeraddr = inet_ntoa(saddr->sin_addr);
+//   saddr = (struct sockaddr_in *)res->ai_addr;
+//   peeraddr = inet_ntoa(saddr->sin_addr);
 
-  printf("Address for %s is %s\n", peer_name, peeraddr);
+//   printf("Address for %s is %s\n", peer_name, peeraddr);
 
-  return saddr;
-}
+//   return saddr;
+// }
 
