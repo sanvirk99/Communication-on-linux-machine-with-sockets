@@ -1,20 +1,11 @@
-#CC=gcc
-#CFLAGS=-I.
 
-
-#%.o: %.c 
-	#$(CC) -c -o $@ $< $(CFLAGS)
-
-#main: udpserv.o 
-	#$(CC) -o main udpserv.o -lpthread
-
-CFLAGS=-Wall -g -std=c99 -D _POSIX_C_SOURCE=200809L -Werror
+CFLAGS=-Wall -g -std=c99 -D _POSIX_C_SOURCE=200809L 
 
 all: build
 
 build:
 
-	gcc $(CFLAGS) udpserv.c -lpthread -o s-talk;
+	gcc $(CFLAGS) udpserv.c console.c -lpthread -o s-talk;
 
 run: build
 

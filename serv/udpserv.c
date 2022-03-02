@@ -16,6 +16,9 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 
+//modules
+#include "console.h"
+
 #define MSG_MAX_LEN 1024
 #define PORT 22110
 
@@ -32,18 +35,23 @@ typedef struct
 //routines
 void test1(int argc,char **argv);
 void threads(int argc,char **argv);
+void threads_user();
 
 //fuunction/threads
 struct sockaddr_in *getIP(char *peer_name);
 void *recieveTx(void *xata);
 void *sendTx(void *xata);
+void *input(void *data);
+void *output(void *data);
 
 
 int main(int argc, char **argv)
 {
-
+  //mutex locks distrubuted here
   //test1(argc,argv);
-  threads(argc,argv);
+  //threads(argc,argv);
+
+  threads_user();
  
   
 }
@@ -55,7 +63,15 @@ int main(int argc, char **argv)
 // use the orginal assgin 3 program to
 //sperated recieve aand post threads
 //
+void threads_user(){
 
+  
+  console_init();
+
+  console_wait();
+
+
+}
 void threads(int argc, char** argv){
 
 
@@ -167,6 +183,7 @@ void *sendTx(void *xata)
 }
 
 
+
 void test1(int argc,char **argv){
 
 
@@ -219,7 +236,7 @@ void test1(int argc,char **argv){
 }
 
 
-
+//can be modiefied to iclude port number but will need to be testes
 struct sockaddr_in *getIP(char *peer_name)
 {
 
