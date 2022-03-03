@@ -21,6 +21,8 @@ typedef struct
 } process_data;
 
 
+static char *peer=NULL;
+
 static pthread_t threadTx;
 
 void *senderTx(void *xata);
@@ -34,17 +36,17 @@ void Sender_init(int argc, char** argv){
   char *other_name = argv[2];
   int port_other = atoi(argv[3]);
 
-   printf("arguments (%d) are: ", argc);
-  for (int i = 0; i < argc; i++)
-  {
+  //  printf("arguments (%d) are: ", argc);
+  // for (int i = 0; i < argc; i++)
+  // {
 
-    printf("Arg %d: %s \n", i, argv[i]);
-  }
-  if (argc != 4)
-  {
-    printf("Usage: %s <port>\n", argv[0]);
-    exit(0);
-  }
+  //   printf("Arg %d: %s \n", i, argv[i]);
+  // }
+  // if (argc != 4)
+  // {
+  //   printf("Usage: %s <port>\n", argv[0]);
+  //   exit(0);
+  // }
 
   int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
@@ -53,10 +55,13 @@ void Sender_init(int argc, char** argv){
   recTx.sockfd=sockfd;
   recTx.port_other=port_other;
   recTx.name=other_name;
+  peer=other_name;
 
    printf("before going in thread send %s \n",recTx.name);
    //printf("before goin in port other %d\n",recTx.port_other);
    pthread_create(&threadTx,NULL,senderTx,&recTx);
+
+   sleep(1);
 
 }
 
@@ -88,7 +93,7 @@ void *senderTx(void *xata)
   printf("before going in getip send %s \n",other_name);
 //printf("before goin in port other %d\n",port_other);
 
-  si_other.sin_addr.s_addr = getIP(other_name)->sin_addr.s_addr;
+  si_other.sin_addr.s_addr = getIP(peer)->sin_addr.s_addr;
 
   int count=0;
 //   while(count<5){

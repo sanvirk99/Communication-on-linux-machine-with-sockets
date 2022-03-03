@@ -31,6 +31,7 @@ void Receiver_init(int argc, char** argv){
   recTx.sockfd=sockfd;
   recTx.port_other=port_other;
   recTx.name=other_name;
+  
   printf("before going in thread rec %s \n",recTx.name);
   pthread_create(&threadRx,NULL,recieverTx,&recTx);
 

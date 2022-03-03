@@ -58,10 +58,10 @@ int main(int argc, char **argv)
   //test1(argc,argv);
 
   //testes and ran physially on computer
-  threads(argc,argv);
+  //threads(argc,argv);
 
   //threads_user();
-  //app_test1(argc,argv);
+  app_test1(argc,argv);
  
   
 }
@@ -73,7 +73,7 @@ void app_test1(int argc, char **argv){
   Receiver_init(argc,argv);
   Sender_init(argc,argv);
 
-  //Receiver_shutdown();
+  Receiver_shutdown();
   Sender_shutdown();
   //Output_shutdown();
   //Input_shutdown();
