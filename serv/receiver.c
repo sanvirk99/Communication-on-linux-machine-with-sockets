@@ -13,7 +13,7 @@
 
 static pthread_t threadRx;
 
- void *recieverTx(void *xata);
+void *recieverTx(void *xata);
 
 
 //should also except the shared mutex and list 
@@ -31,7 +31,7 @@ void Receiver_init(int argc, char** argv){
   recTx.sockfd=sockfd;
   recTx.port_other=port_other;
   recTx.name=other_name;
-
+  printf("before going in thread rec %s \n",recTx.name);
   pthread_create(&threadRx,NULL,recieverTx,&recTx);
 
 }
@@ -53,6 +53,10 @@ void *recieverTx(void *xata)
   int sockfd = data->sockfd;
   int port = data->port;
 
+  printf("before going in getIP rec %s \n",data->name);
+  //printf("before goin in port other %d\n",port_other);
+
+
   struct sockaddr_in si_me, si_other;
   char buffer[1024];
   socklen_t addr_size;
@@ -65,20 +69,20 @@ void *recieverTx(void *xata)
   bind(sockfd, (struct sockaddr *)&si_me, sizeof(si_me));
   addr_size = sizeof(si_other);
 
-  while (1)
-  {
+//   while (1)
+//   {
 
-    // memset(buffer, ' ', 1024);//clear write space
+//     // memset(buffer, ' ', 1024);//clear write space
 
-    recvfrom(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
-    printf("[+]Data Received: %s\n", buffer);
+//     recvfrom(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
+//     printf("[+]Data Received: %s\n", buffer);
 
-    if (buffer[0] == '!')
-    {
+//     if (buffer[0] == '!')
+//     {
 
-      break;
-    }
-  }
+//       break;
+//     }
+//   }
 
   return NULL;
 }

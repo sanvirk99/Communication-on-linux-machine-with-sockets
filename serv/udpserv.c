@@ -19,6 +19,10 @@
 //modules
 #include "functions.h"
 #include "console.h"
+#include "input.h"
+#include "output.h"
+#include "sender.h"
+#include "receiver.h"
 
 
 #define MSG_MAX_LEN 1024
@@ -38,9 +42,10 @@
 void test1(int argc,char **argv);
 void threads(int argc,char **argv);
 void threads_user();
+void app_test1(int argc, char **argv);
 
 //fuunction/threads
-struct sockaddr_in *getIP(char *peer_name);
+//struct sockaddr_in *getIP(char *peer_name);
 void *recieveTx(void *xata);
 void *sendTx(void *xata);
 void *input(void *data);
@@ -51,11 +56,29 @@ int main(int argc, char **argv)
 {
   //mutex locks distrubuted here
   //test1(argc,argv);
+
+  //testes and ran physially on computer
   threads(argc,argv);
 
   //threads_user();
+  //app_test1(argc,argv);
  
   
+}
+
+void app_test1(int argc, char **argv){
+
+  //Input_init();
+  //Output_init();
+  Receiver_init(argc,argv);
+  Sender_init(argc,argv);
+
+  //Receiver_shutdown();
+  Sender_shutdown();
+  //Output_shutdown();
+  //Input_shutdown();
+
+
 }
 
 // sockid does it need to be same yes i guess cause bind is nesscary but on client side create two sockets

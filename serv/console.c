@@ -8,10 +8,12 @@
 
 /////
 
+//use only for output
+//share mutex with recieve thread to acess the list
+//share list
 
-
-void *input(void *data);
-void *output(void *data);
+void *inputx(void *data);
+void *outputx(void *data);
 
 static pthread_t threadIN, threadOT,signallerThread;
 
@@ -23,8 +25,8 @@ void console_init()
 
     //_process_data recTx;
 
-    pthread_create(&threadIN, NULL, input, NULL);
-    pthread_create(&threadOT, NULL, output, NULL);
+    pthread_create(&threadIN, NULL, inputx, NULL);
+    pthread_create(&threadOT, NULL, outputx, NULL);
     
 
     
@@ -41,7 +43,7 @@ void console_wait()
 
 //dont stop mutec to get screen time let print the messafe
 //come back to later
-void *input(void *data)
+void *inputx(void *data)
 {
 
     
@@ -86,7 +88,7 @@ void *input(void *data)
 
 //check if list empty
 
-void *output(void *data)
+void *outputx(void *data)
 {
 
     // char buffer[1024];
