@@ -43,22 +43,22 @@ void *output(void *data)
     // char buffer[1024];
     int count=0;
     char buffer[1024];
-
+    char *msg;
     while (1)
     {
        //////
 
        if(List_count(list_Rx)!=0){
 
-        char *msg=List_trim(list_Rx);
+        msg=List_trim(list_Rx);
 
-        strcpy(buffer, msg); 
+       // strcpy(buffer, msg); 
 
         printf("test : %s\n",msg);
 
-        printf("[+]Data Received: %s\n", buffer);
+        //printf("[+]Data Received: %s\n", buffer);
 
-        free(msg);
+        
 
         break;
        
@@ -66,5 +66,8 @@ void *output(void *data)
        }
        
     }
+    
+    printf("exit output\n");
+    free(msg);
     return NULL;
 }
