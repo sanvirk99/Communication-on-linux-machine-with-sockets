@@ -5,16 +5,20 @@
 #include <unistd.h>
 #include <pthread.h>
 
-
+#include "list.h"
 
 void *input(void *data);
+
 
 static pthread_t threadIN;
 
 static pthread_cond_t syncAddToList;
 
-void Input_init()
+List *list_Tx;
+
+void Input_init(List *list)
 {
+    list_Tx=list;
 
     //_process_data recTx;
     //accept mutex sender 

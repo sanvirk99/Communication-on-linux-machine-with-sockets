@@ -1,5 +1,4 @@
 #include "receiver.h"
-#include "functions.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,30 +9,33 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+#include "functions.h"
+#include "list.h"
 
 static pthread_t threadRx;
+static pthread_cond_t syncOKToPrint;
+static pthread_mutex_t syncOKToPrintMutex;
 
-void *recieverTx(void *xata);
+static int port=NULL;
+static int sockrd=NULL;
+static char *peer=NULL;
+static int port_other=NULL;
 
+void *recieverTx(void *data);
 
+List *list_Rx;
 //should also except the shared mutex and list 
-void Receiver_init(int argc, char** argv){
+void Receiver_init(int argc, char** argv,List *list){
 
-  int port = atoi(argv[1]);
-  char *other_name = argv[2];
-  int port_other = atoi(argv[3]);
+  list_Rx=list;
+  port = atoi(argv[1]);
+  peer = argv[2];
+  port_other = atoi(argv[3]);
+  sockrd = socket(AF_INET, SOCK_DGRAM, 0);
 
-  int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
-  
-  _process_data recTx;
-  recTx.port=port;
-  recTx.sockfd=sockfd;
-  recTx.port_other=port_other;
-  recTx.name=other_name;
-  
-  printf("before going in thread rec %s \n",recTx.name);
-  pthread_create(&threadRx,NULL,recieverTx,&recTx);
+ 
+  pthread_create(&threadRx,NULL,recieverTx,NULL);
 
 }
 
@@ -48,16 +50,10 @@ void Receiver_shutdown(){
 
 
 
-void *recieverTx(void *xata)
+void *recieverTx(void *data)
 {
-  _process_data *data = xata;
-  int sockfd = data->sockfd;
-  int port = data->port;
-
-  printf("before going in getIP rec %s \n",data->name);
+  
   //printf("before goin in port other %d\n",port_other);
-
-
   struct sockaddr_in si_me, si_other;
   char buffer[1024];
   socklen_t addr_size;
@@ -67,23 +63,72 @@ void *recieverTx(void *xata)
   si_me.sin_port = htons(port);
   si_me.sin_addr.s_addr = htonl(INADDR_ANY);
 
-  bind(sockfd, (struct sockaddr *)&si_me, sizeof(si_me));
+
+  si_other.sin_family = AF_INET;
+  si_other.sin_port = htons(port_other);
+  si_other.sin_addr.s_addr = getIP(peer)->sin_addr.s_addr;
+
+  bind(sockrd, (struct sockaddr *)&si_me, sizeof(si_me));
   addr_size = sizeof(si_other);
 
-//   while (1)
-//   {
+  // while (1)
+  // {
 
-//     // memset(buffer, ' ', 1024);//clear write space
+  //   // memset(buffer, ' ', 1024);//clear write space
 
-//     recvfrom(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
-//     printf("[+]Data Received: %s\n", buffer);
+  //   recvfrom(sockrd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
+  //   printf("[+]Data Received: %s\n", buffer);
 
-//     if (buffer[0] == '!')
-//     {
+  //   if (buffer[0] == '!')
+  //   {
 
-//       break;
-//     }
-//   }
+  //     break;
+  //   }
+  // }
+
+
+  int count=0;
+  int strlenght;
+   while(count<1)
+  {
+
+    // memset(buffer, ' ', 1024);//clear write space
+    printf("wating on message\n");
+
+    int lenght=recvfrom(sockrd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
+
+     
+
+    strlenght=strlen(buffer);
+
+    printf("recieved string lenght: %d\n",strlenght);
+
+    
+    buffer[strlenght]=0;
+    char *ptr =(char*)malloc(strlenght+1);
+    strcpy(ptr,buffer);
+
+    printf("ptr string:%s",ptr);
+
+    
+    ptr=buffer;
+    if(List_prepend(list_Rx,ptr)==0){
+
+      printf("sucess\n");
+    }
+
+
+    //printf("[+]Data Received: %s\n", buffer);
+    if (buffer[0] == '!')
+    {
+      break;
+    }
+
+     
+
+      count++;
+
+  }
 
   return NULL;
 }

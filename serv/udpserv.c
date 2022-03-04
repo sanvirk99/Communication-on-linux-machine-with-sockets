@@ -23,6 +23,7 @@
 #include "output.h"
 #include "sender.h"
 #include "receiver.h"
+#include "list.h"
 
 
 #define MSG_MAX_LEN 1024
@@ -68,15 +69,18 @@ int main(int argc, char **argv)
 
 void app_test1(int argc, char **argv){
 
-  //Input_init();
-  //Output_init();
-  Receiver_init(argc,argv);
-  Sender_init(argc,argv);
+  List *recive_list=List_create();
+  List *sender_list=List_create();
+
+  //Input_init(sender_list);
+  Output_init(recive_list);
+  Receiver_init(argc,argv,recive_list);
+ // Sender_init(argc,argv,sender_list);
 
   Receiver_shutdown();
-  Sender_shutdown();
-  //Output_shutdown();
-  //Input_shutdown();
+ // Sender_shutdown();
+  Output_shutdown();
+ // Input_shutdown();
 
 
 }
@@ -188,7 +192,7 @@ void *sendTx(void *xata)
   int count=0;
   while(count<5){
   sleep(1);
-  strcpy(buffer, "Hello other main stalk here\n");
+  strcpy(buffer, "Hello other main client here\n");
   sendto(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, sizeof(si_other));
   printf("[+]Data Send: %s\n", buffer);
 

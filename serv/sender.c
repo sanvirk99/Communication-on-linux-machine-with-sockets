@@ -11,30 +11,26 @@
 #include <arpa/inet.h>
 
 #include "functions.h"
-
-typedef struct
-{
-  int port;
-  int port_other;
-  int sockfd;
-  char *name;
-} process_data;
+#include "list.h"
 
 
 static char *peer=NULL;
+static int port_other=NULL;
+static int sockfd=NULL;
 
 static pthread_t threadTx;
 
 void *senderTx(void *xata);
+List *list_Tx;
 
+void Sender_init(int argc, char** argv,List *list){
 
+  list_Tx=list;
 
-void Sender_init(int argc, char** argv){
-
-
-  int port = atoi(argv[1]);
-  char *other_name = argv[2];
-  int port_other = atoi(argv[3]);
+  //copy to shared data instead of using void pointer to pass data
+  
+  peer = argv[2];
+  port_other = atoi(argv[3]);
 
   //  printf("arguments (%d) are: ", argc);
   // for (int i = 0; i < argc; i++)
@@ -48,20 +44,14 @@ void Sender_init(int argc, char** argv){
   //   exit(0);
   // }
 
-  int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+  sockfd = socket(AF_INET, SOCK_DGRAM, 0);
 
-  process_data recTx;
-  recTx.port=port;
-  recTx.sockfd=sockfd;
-  recTx.port_other=port_other;
-  recTx.name=other_name;
-  peer=other_name;
 
-   printf("before going in thread send %s \n",recTx.name);
    //printf("before goin in port other %d\n",recTx.port_other);
-   pthread_create(&threadTx,NULL,senderTx,&recTx);
+   pthread_create(&threadTx,NULL,senderTx,NULL);
 
-   sleep(1);
+  //gives time for get ip to get the data in send
+   //sleep(1);
 
 }
 
@@ -78,10 +68,9 @@ void Sender_shutdown(){
 void *senderTx(void *xata)
 {
 
-  process_data *data = xata;
-  int sockfd = data->sockfd;
-  int port_other = data->port_other;
-  char *other_name = data->name;
+  printf("sender peer = %s \n",peer);
+  printf("sender peer port= %d\n",port_other);
+
  
   char buffer[1024];
   struct sockaddr_in si_other;
@@ -89,30 +78,26 @@ void *senderTx(void *xata)
   si_other.sin_family = AF_INET;
   si_other.sin_port = htons(port_other);
 
-
-  printf("before going in getip send %s \n",other_name);
-//printf("before goin in port other %d\n",port_other);
-
   si_other.sin_addr.s_addr = getIP(peer)->sin_addr.s_addr;
 
   int count=0;
-//   while(count<5){
-//   sleep(1);
-//   strcpy(buffer, "Hello other main stalk here\n");
-//   sendto(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, sizeof(si_other));
-//   printf("[+]Data Send: %s\n", buffer);
+  while(count<5){
+  sleep(1);
+  strcpy(buffer, "Hello other main stalk here\n");
+  sendto(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, sizeof(si_other));
+  printf("[+]Data Send: %s\n", buffer);
 
-//   count++;
-//   if(count==5){
+  count++;
+  if(count==5){
 
-//     strcpy(buffer, "!\n");
-//     sendto(sockfd, buffer, 1024, 0, (struct sockaddr*)&si_other, sizeof(si_other));
-//     printf("[+]Data Send: %s", buffer);
+    strcpy(buffer, "!\n");
+    sendto(sockfd, buffer, 1024, 0, (struct sockaddr*)&si_other, sizeof(si_other));
+    printf("[+]Data Send: %s", buffer);
 
-//     }
+    }
 
 
-//   }
+  }
   return NULL;
   
 }

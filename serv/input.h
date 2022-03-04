@@ -1,7 +1,9 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
-void Input_init();
+#include "list.h"
+
+void Input_init(List *list);
 void Input_shutdown();
 
 #endif
