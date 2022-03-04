@@ -5,5 +5,5 @@ CFLAGS=-I.
 %.o: %.c 
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-main: udpclient.o 
-	$(CC) -o main udpclient.o -lpthread
+s-talk: udpclient.o 
+	$(CC) -o s-talk udpclient.o -lpthread
