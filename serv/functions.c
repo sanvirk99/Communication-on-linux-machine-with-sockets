@@ -33,3 +33,9 @@ struct sockaddr_in *getIP(char *peer_name)
 
   return saddr;
 }
+
+void (*freeLists)(void*)=&freeListData;
+void freeListData(void *data){
+
+  free(data);
+}

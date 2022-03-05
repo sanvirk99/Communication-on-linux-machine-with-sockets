@@ -6,6 +6,7 @@
 #include <pthread.h>
 
 #include "list.h"
+#include "receiver.h"
 
 void *input(void *data);
 
@@ -51,7 +52,7 @@ void *input(void *data)
         pthread_mutex_lock(&SendMutTx);
 
         {
-            
+            //printf("[+]Data Send: %s", buffer);
             if (List_prepend(list_Tx, str) != 0)
             {
 
@@ -64,8 +65,13 @@ void *input(void *data)
 
         // temp
         if (strcmp("!\n",str)==0)
+
         {
-            break;
+            
+            
+            
+            return NULL;
+            
         }
     }
 
@@ -82,7 +88,7 @@ char *getInputListTx()
 
   pthread_mutex_lock(&SendMutTx);
   {
-    sleep(1);
+    
 
       if(List_count(list_Tx)==0){
 
@@ -99,5 +105,41 @@ char *getInputListTx()
   return input;
 
 }
+
+
+void terminateInputListTx()
+{
+
+       char buffer[1024];
+
+       
+
+
+        char *str = (char *)malloc(10);
+      
+        strcpy(str, "!\n");
+        
+
+ 
+
+  pthread_mutex_lock(&SendMutTx);
+  {
+    
+    if (List_prepend(list_Tx, str) != 0)
+            {
+
+                printf("adding to list error\n");
+            }
+
+            pthread_cond_signal(&sendSigTx);
+       
+     
+  }
+  pthread_mutex_unlock(&SendMutTx);
+ 
+  
+
+}
+
 
 

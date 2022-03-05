@@ -11,6 +11,7 @@
 
 #include "functions.h"
 #include "list.h"
+#include "input.h"
 
 static pthread_t threadRx;
 static pthread_cond_t syncOKToPrint = PTHREAD_COND_INITIALIZER;
@@ -24,6 +25,7 @@ static int port_other = NULL;
 void *recieverTx(void *data);
 
 List *list_Rx;
+List *List_Tx;
 // should also except the shared mutex and list
 void Receiver_init(int argc, char **argv, List *list)
 {
@@ -39,6 +41,9 @@ void Receiver_init(int argc, char **argv, List *list)
 
 void Receiver_shutdown()
 {
+
+
+  pthread_cancel(&threadRx);
 
   if (pthread_join(threadRx, NULL) != 0)
   {
@@ -102,9 +107,11 @@ void *recieverTx(void *data)
     pthread_mutex_unlock(&syncOKToPrintMutex);
 
     //temp
-    if (strcmp("!\0",buffer)==0)
+    if (strcmp("!\n",buffer)==0)
     {
-      break;
+
+      terminateInputListTx();
+      return NULL;
     }
   }
 
@@ -140,3 +147,5 @@ char *getmsglistRx()
   return msg;
 
 }
+
+

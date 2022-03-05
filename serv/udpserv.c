@@ -53,6 +53,8 @@ void *input(void *data);
 void *output(void *data);
 
 
+
+
 int main(int argc, char **argv)
 {
   //mutex locks distrubuted here
@@ -89,6 +91,8 @@ void app_test1(int argc, char **argv){
   Output_shutdown();
   Input_shutdown();
 
+  List_free(recive_list,(*freeLists));
+  List_free(sender_list,(*freeLists));
 
 }
 

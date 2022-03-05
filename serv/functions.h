@@ -16,6 +16,13 @@ typedef struct
 
 struct sockaddr_in *getIP(char *peer_name);
 
+
+void (*freeLists)(void*);
+void freeListData(void *data);
+
+
+
+
 #endif
 
 
