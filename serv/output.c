@@ -38,14 +38,14 @@ void *output(void *data)
     {
       
             char *ms = getmsglistRx();
-            printf("printer3\n");
-            printf("address = %p\n", ms);
+            //printf("printer3\n");
+            //printf("address = %p\n", ms);
 
             if(ms!=NULL){
 
                 printf("[+]Data Received: %s\n", ms);
                
-                if (ms[0] == '!')
+                if (strcmp("!\n",ms)==0)
                 {
 
                     free(ms);

@@ -85,7 +85,7 @@ void *senderTx(void *xata)
       printf("[+]Data Send: %s\n", ms);
       sendto(sockfd, buffer, 1024, 0, (struct sockaddr *)&si_other, sizeof(si_other));
 
-      if (buffer[0] == '!')
+      if (strcmp("!\n",ms)==0)
       {
 
         free(ms);

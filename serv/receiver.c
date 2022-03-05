@@ -60,9 +60,9 @@ void *recieverTx(void *data)
   si_me.sin_port = htons(port);
   si_me.sin_addr.s_addr = htonl(INADDR_ANY);
 
-  si_other.sin_family = AF_INET;
-  si_other.sin_port = htons(port_other);
-  si_other.sin_addr.s_addr = getIP(peer)->sin_addr.s_addr;
+  // si_other.sin_family = AF_INET;
+  // si_other.sin_port = htons(port_other);
+  // si_other.sin_addr.s_addr = getIP(peer)->sin_addr.s_addr;
 
   bind(sockrd, (struct sockaddr *)&si_me, sizeof(si_me));
   addr_size = sizeof(si_other);
@@ -73,21 +73,21 @@ void *recieverTx(void *data)
   {
     char buffer[1024];
 
-    printf("wating on message\n");
+    
 
     int lenght = recvfrom(sockrd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size); // blocking
 
     strlenght = strlen(buffer);
 
-    printf("recieved string lenght: %d\n", lenght);
+    //printf("recieved string lenght: %d\n", lenght);
 
     char *str = (char *)malloc( sizeof(char)*lenght);
 
-    printf("address to list:%p\n", str);
+    //printf("address to list:%p\n", str);
 
     strcpy(str, buffer);
 
-    printf("address to list:%p\n", str);
+    //printf("address to list:%p\n", str);
 
     pthread_mutex_lock(&syncOKToPrintMutex);
     {
@@ -102,7 +102,7 @@ void *recieverTx(void *data)
     pthread_mutex_unlock(&syncOKToPrintMutex);
 
     //temp
-    if (buffer[0] == '!')
+    if (strcmp("!\0",buffer)==0)
     {
       break;
     }
@@ -135,8 +135,8 @@ char *getmsglistRx()
     
   }
   pthread_mutex_unlock(&syncOKToPrintMutex);
-  printf("printer2\n");
-   printf("address = %p\n", msg);
+  // printf("printer2\n");
+  //  printf("address = %p\n", msg);
   return msg;
 
 }

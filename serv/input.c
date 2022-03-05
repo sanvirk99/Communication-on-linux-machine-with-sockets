@@ -47,9 +47,11 @@ void *input(void *data)
         char *str = (char *)malloc(lenght);
       
         strcpy(str, buffer);
-
+        
         pthread_mutex_lock(&SendMutTx);
+
         {
+            
             if (List_prepend(list_Tx, str) != 0)
             {
 
@@ -61,7 +63,7 @@ void *input(void *data)
         pthread_mutex_unlock(&SendMutTx);
 
         // temp
-        if (buffer[0] == '!')
+        if (strcmp("!\n",str)==0)
         {
             break;
         }

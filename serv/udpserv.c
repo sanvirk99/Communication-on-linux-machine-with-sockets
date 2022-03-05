@@ -79,7 +79,7 @@ void app_test1(int argc, char **argv){
 
 
 
-  //Input_init(sender_list);
+  Input_init(sender_list);
   Output_init(recive_list);
   Receiver_init(argc,argv,recive_list);
   Sender_init(argc,argv,sender_list);
