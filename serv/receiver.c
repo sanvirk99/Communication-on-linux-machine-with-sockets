@@ -13,8 +13,8 @@
 #include "list.h"
 
 static pthread_t threadRx;
-static pthread_cond_t syncOKToPrint;
-static pthread_mutex_t syncOKToPrintMutex;
+static pthread_cond_t syncOKToPrint = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t syncOKToPrintMutex = PTHREAD_MUTEX_INITIALIZER;
 
 static int port = NULL;
 static int sockrd = NULL;
@@ -52,7 +52,7 @@ void *recieverTx(void *data)
 
   // printf("before goin in port other %d\n",port_other);
   struct sockaddr_in si_me, si_other;
-  char buffer[1024];
+
   socklen_t addr_size;
 
   memset(&si_me, '\0', sizeof(si_me));
@@ -71,6 +71,7 @@ void *recieverTx(void *data)
   int strlenght;
   while (1)
   {
+    char buffer[1024];
 
     printf("wating on message\n");
 
@@ -78,13 +79,15 @@ void *recieverTx(void *data)
 
     strlenght = strlen(buffer);
 
-    printf("recieved string lenght: %d\n", strlenght);
+    printf("recieved string lenght: %d\n", lenght);
 
-    char *str = (char *)malloc(strlenght);
+    char *str = (char *)malloc( sizeof(char)*lenght);
+
+    printf("address to list:%p\n", str);
 
     strcpy(str, buffer);
 
-    printf("add to list:%s\n", str);
+    printf("address to list:%p\n", str);
 
     pthread_mutex_lock(&syncOKToPrintMutex);
     {
@@ -98,12 +101,11 @@ void *recieverTx(void *data)
     }
     pthread_mutex_unlock(&syncOKToPrintMutex);
 
+    //temp
     if (buffer[0] == '!')
     {
       break;
     }
-
-
   }
 
   return NULL;
@@ -114,15 +116,27 @@ char *getmsglistRx()
 
   char *msg;
 
+ 
+
   pthread_mutex_lock(&syncOKToPrintMutex);
-
   {
+    sleep(1);
 
-    pthread_cond_wait(&syncOKToPrint, &syncOKToPrintMutex);
+      if(List_count(list_Rx)==0){
 
-    msg = List_trim(list_Rx);
+        pthread_cond_wait(&syncOKToPrint, &syncOKToPrintMutex);
+      }
+
+       
+      msg=List_trim(list_Rx);
+      
+      
+
+    
   }
   pthread_mutex_unlock(&syncOKToPrintMutex);
-
+  printf("printer2\n");
+   printf("address = %p\n", msg);
   return msg;
+
 }

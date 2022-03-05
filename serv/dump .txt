@@ -19,3 +19,27 @@ struct sockaddr_in* getIP(char* peer_name){
   return saddr;
 
 }
+
+
+
+
+
+
+
+////////////////////
+
+why address changin
+
+reducing by certain amount of bytes
+address to list:0x7fd174003810
+address to list:0x7fd174003810
+wating on message
+printer1
+printer2
+address = 0x7fd174003810
+printer3
+address = 0x74003810
+[+]Data Received: 0x74003810
+printer4
+Segmentation fault (core dumped)
+ssv3@srye-4024u-f6:~/sfuhome/cmpt300/cmpt300a2_v2/serv$ 

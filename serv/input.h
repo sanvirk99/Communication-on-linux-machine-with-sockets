@@ -5,5 +5,6 @@
 
 void Input_init(List *list);
 void Input_shutdown();
+char* getInputListTx();
 
 #endif

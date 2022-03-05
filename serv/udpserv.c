@@ -74,15 +74,20 @@ void app_test1(int argc, char **argv){
   List *recive_list=List_create();
   List *sender_list=List_create();
 
+   pthread_cond_t syncOKToPrint = PTHREAD_COND_INITIALIZER;
+   pthread_mutex_t syncOKToPrintMutex = PTHREAD_MUTEX_INITIALIZER;
+
+
+
   //Input_init(sender_list);
   Output_init(recive_list);
   Receiver_init(argc,argv,recive_list);
- // Sender_init(argc,argv,sender_list);
+  Sender_init(argc,argv,sender_list);
 
   Receiver_shutdown();
- // Sender_shutdown();
+  Sender_shutdown();
   Output_shutdown();
- // Input_shutdown();
+  Input_shutdown();
 
 
 }

@@ -6,21 +6,19 @@
 #include <pthread.h>
 
 #include "list.h"
+#include "receiver.h"
 
 void *output(void *data);
 
 static pthread_t threadIN;
 
-static pthread_cond_t syncAddToList;
 
 List *list_Rx;
 
 void Output_init(List *list)
 {
-
+ 
     list_Rx = list;
-    // accept mutex reciever
-    // accept list reciever
 
     pthread_create(&threadIN, NULL, output, NULL);
 }
@@ -30,38 +28,35 @@ void Output_shutdown()
     pthread_join(threadIN, NULL);
 }
 
+
 void *output(void *data)
 {
 
-    // char buffer[1024];
     int count = 0;
-    char *msg;
+
     while (1)
     {
-        //////
+      
+            char *ms = getmsglistRx();
+            printf("printer3\n");
+            printf("address = %p\n", ms);
 
-        if (List_count(list_Rx) != 0)
-        {
+            if(ms!=NULL){
 
-            msg = getmsglistRx();
+                printf("[+]Data Received: %s\n", ms);
+               
+                if (ms[0] == '!')
+                {
 
-            // strcpy(buffer, msg);
+                    free(ms);
+                    return NULL;
+                }
 
-            printf("[+]Data Received: %s\n", msg);
-
-            // printf("[+]Data Received: %s\n", buffer);
-            if (msg[0] == '!')
-            {
-
-                free(msg);
-                break;
             }
 
-            free(msg);
-        }
+      free(ms);
 
-        printf("exit output\n");
-
-        return NULL;
     }
+
+    return NULL;
 }
