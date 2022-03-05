@@ -75,13 +75,13 @@ void app_test1(int argc, char **argv){
   List *sender_list=List_create();
 
   //Input_init(sender_list);
- // Output_init(recive_list);
+  Output_init(recive_list);
   Receiver_init(argc,argv,recive_list);
  // Sender_init(argc,argv,sender_list);
 
   Receiver_shutdown();
  // Sender_shutdown();
- // Output_shutdown();
+  Output_shutdown();
  // Input_shutdown();
 
 

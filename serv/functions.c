@@ -21,6 +21,7 @@ struct sockaddr_in *getIP(char *peer_name)
   if (0 != getaddrinfo(peer_name, NULL, NULL, &res))
   {
     fprintf(stderr, "Error in resolving peer_name %s\n", peer_name);
+    freeaddrinfo(res);
     exit(1);
   }
 
@@ -28,6 +29,7 @@ struct sockaddr_in *getIP(char *peer_name)
   peeraddr = inet_ntoa(saddr->sin_addr);
 
   printf("Address for %s is %s\n", peer_name, peeraddr);
+  freeaddrinfo(res);
 
   return saddr;
 }

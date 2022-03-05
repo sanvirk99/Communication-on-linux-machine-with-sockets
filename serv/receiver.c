@@ -77,66 +77,54 @@ void *recieverTx(void *data)
   bind(sockrd, (struct sockaddr *)&si_me, sizeof(si_me));
   addr_size = sizeof(si_other);
 
-  // while (1)
-  // {
 
-  //   // memset(buffer, ' ', 1024);//clear write space
+  int count=0;
+  int strlenght;
+   while(count<1)
+  {
 
-  //   recvfrom(sockrd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
-  //   printf("[+]Data Received: %s\n", buffer);
+   
+    printf("wating on message\n");
 
-  //   if (buffer[0] == '!')
-  //   {
-
-  //     break;
-  //   }
-  // }
-
-
-  // int count=0;
-  // int strlenght;
-  //  while(count<1)
-  // {
-
-    // memset(buffer, ' ', 1024);//clear write space
-    // printf("wating on message\n");
-
-    // int lenght=recvfrom(sockrd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
+    int lenght=recvfrom(sockrd, buffer, 1024, 0, (struct sockaddr *)&si_other, &addr_size);
 
      
 
-    // strlenght=strlen(buffer);
+    strlenght=strlen(buffer);
 
-    // printf("recieved string lenght: %d\n",strlenght);
-
-    
-    // buffer[strlenght]=0;
-    // char *str =(char*)malloc(strlenght);
-    // strcpy(str,buffer);
-
-    // printf("ptr string:%s",str);
+    printf("recieved string lenght: %d\n",strlenght);
 
     
+    buffer[strlenght]=0;
+    char *str =(char*)malloc(strlenght);
+ 
+    strcpy(str,buffer);
+
+    printf("ptr string:%s",str);
+
     
-    // if(List_prepend(list_Rx,ptr)==0){
+    
+    if(List_prepend(list_Rx,str)==0){
 
-    //   printf("sucess\n");
-    // }
+      printf("sucess\n");
+    }
 
 
-    //printf("[+]Data Received: %s\n", buffer);
-  //   if (buffer[0] == '!')
-  //   {
-  //     break;
-  //   }
+    printf("[+]Data Received: %s\n", buffer);
+    if (buffer[0] == '!')
+    {
+      break;
+    }
 
      
 
-  //     count++;
+      count++;
 
-  //     free(str);
+     // free(str);
 
-  // }
+  }
+
+  //sleep(2);
   
   return NULL;
 }
