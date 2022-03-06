@@ -30,6 +30,7 @@ void Input_init(List *list)
 
 void Input_shutdown()
 {
+    pthread_cancel(threadIN);
     pthread_join(threadIN, NULL);
 }
 

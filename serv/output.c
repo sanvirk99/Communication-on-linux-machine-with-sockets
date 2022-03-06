@@ -7,10 +7,11 @@
 
 #include "list.h"
 #include "receiver.h"
+#include "functions.h"
 
 void *output(void *data);
 
-static pthread_t threadIN;
+static pthread_t threadOu;
 
 
 List *list_Rx;
@@ -20,12 +21,13 @@ void Output_init(List *list)
  
     list_Rx = list;
 
-    pthread_create(&threadIN, NULL, output, NULL);
+    pthread_create(&threadOu, NULL, output, NULL);
 }
 
 void Output_shutdown()
 {
-    pthread_join(threadIN, NULL);
+    pthread_cancel(threadOu);
+    pthread_join(threadOu, NULL);
 }
 
 
@@ -47,7 +49,7 @@ void *output(void *data)
                
                 if (strcmp("!\n",ms)==0)
                 {
-
+                    cancel_all();
                     free(ms);
                     return NULL;
                 }

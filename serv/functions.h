@@ -12,10 +12,9 @@ typedef struct
 } _process_data;
 
 
-
-
 struct sockaddr_in *getIP(char *peer_name);
-
+void cancel_all();
+void wait();
 
 void (*freeLists)(void*);
 void freeListData(void *data);

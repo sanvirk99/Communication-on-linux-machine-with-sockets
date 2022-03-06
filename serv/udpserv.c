@@ -86,10 +86,24 @@ void app_test1(int argc, char **argv){
   Receiver_init(argc,argv,recive_list);
   Sender_init(argc,argv,sender_list);
 
-  Receiver_shutdown();
+  wait();
+  
+ 
   Sender_shutdown();
+  
+
+   Input_shutdown();
+  
+  
   Output_shutdown();
-  Input_shutdown();
+ 
+
+  Receiver_shutdown();
+  
+
+ 
+ 
+
 
   List_free(recive_list,(*freeLists));
   List_free(sender_list,(*freeLists));

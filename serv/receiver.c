@@ -43,13 +43,15 @@ void Receiver_shutdown()
 {
 
 
-  pthread_cancel(&threadRx);
+  pthread_cancel(threadRx);
+ 
 
   if (pthread_join(threadRx, NULL) != 0)
   {
 
     perror("reciever join error");
-  };
+  }; 
+ 
 }
 
 void *recieverTx(void *data)
@@ -110,7 +112,7 @@ void *recieverTx(void *data)
     if (strcmp("!\n",buffer)==0)
     {
 
-      terminateInputListTx();
+      
       return NULL;
     }
   }

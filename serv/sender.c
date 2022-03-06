@@ -57,6 +57,8 @@ void Sender_init(int argc, char **argv, List *list)
 void Sender_shutdown()
 {
 
+  pthread_cancel(threadTx);
+
   pthread_join(threadTx, NULL);
 }
 
@@ -87,6 +89,17 @@ void *senderTx(void *xata)
 
       if (strcmp("!\n",ms)==0)
       {
+          // //sending msg to recieve thread to shut down
+          // struct sockaddr_in si_me;
+          // memset(&si_other, '\0', sizeof(si_me));
+          // si_other.sin_family = AF_INET;
+          // si_other.sin_port = htons(port_other);
+          // si_other.sin_addr.s_addr = getIP("localhost")->sin_addr.s_addr;
+
+          // int socketidtemp=sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+          // sendto(sockfd,"!\n", 1024, 0, (struct sockaddr *)&si_me, sizeof(si_me));
+          
+        cancel_all();
 
         free(ms);
         return NULL;

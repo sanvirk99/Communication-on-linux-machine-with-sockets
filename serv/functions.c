@@ -9,6 +9,14 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pthread.h>
+
+
+//static pthread_t threadRx;
+static pthread_cond_t proceed = PTHREAD_COND_INITIALIZER;
+static pthread_mutex_t cancel = PTHREAD_MUTEX_INITIALIZER;
+
+
 
 
 struct sockaddr_in *getIP(char *peer_name)
@@ -38,4 +46,45 @@ void (*freeLists)(void*)=&freeListData;
 void freeListData(void *data){
 
   free(data);
+}
+
+
+//singnal fucntion 
+
+void cancel_all(){
+
+
+
+    pthread_mutex_lock(&cancel);
+    {
+      
+      pthread_cond_signal(&proceed);
+    }
+    pthread_mutex_unlock(&cancel);
+
+
+
+}
+
+
+
+
+
+
+//wait for all 
+
+void wait(){
+
+
+
+    pthread_mutex_lock(&cancel);
+    {
+      
+      pthread_cond_wait(&proceed,&cancel);
+    }
+    pthread_mutex_unlock(&cancel);
+
+
+
+
 }
