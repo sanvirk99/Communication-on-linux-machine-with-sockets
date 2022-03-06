@@ -5,7 +5,7 @@ all: build
 
 build:
 
-	gcc $(CFLAGS) udpserv.c console.c functions.c sender.c receiver.c output.c input.c list.c -lpthread -o s-talk;
+	gcc $(CFLAGS) main.c functions.c sender.c receiver.c output.c input.c list.c -lpthread -o s-talk;
 
 run: build
 
