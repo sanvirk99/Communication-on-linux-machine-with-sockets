@@ -1,4 +1,4 @@
- UDP peer to peer commincation 
+ # UDP peer to peer commincation 
 
 
 <li>./coms [my port number] [remote machine name] [remote port number]</li>
