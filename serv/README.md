@@ -1,9 +1,9 @@
 # UDP peer to peer commincation 
 
 
-<h1>./coms [my port number] [remote machine name] [remote port number]<h1>
+<li>./coms [my port number] [remote machine name] [remote port number]</li>
 
-<h1>sample run procedure running on localhost<h1>
+<h1>sample run procedure running on localhost</h1>
 
 #Steps
 
