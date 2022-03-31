@@ -15,6 +15,6 @@
 
 <li>terminate on both machines or terminals by typing ! on any machine or terminal</li>
 
-send and receive messges between the two terminal. Same procedure applies to remote machines
+<b>send and receive messges between the two terminal. Same procedure applies to remote machines</b>
 
 
