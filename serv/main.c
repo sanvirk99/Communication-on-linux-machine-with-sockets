@@ -9,12 +9,10 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-
 #include <netdb.h>
 #include <pthread.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
-
 
 // modules
 #include "functions.h"
@@ -27,14 +25,10 @@
 
 // resource https://github.com/nikhilroxtomar/UDP-Client-Server-Program-in-C.git
 
-
-
-
 int main(int argc, char **argv)
 {
-  
 
-    List *recive_list = List_create();
+  List *recive_list = List_create();
   List *sender_list = List_create();
 
   pthread_cond_t syncOKToPrint = PTHREAD_COND_INITIALIZER;
@@ -57,9 +51,5 @@ int main(int argc, char **argv)
 
   List_free(recive_list, (*freeLists));
   List_free(sender_list, (*freeLists));
-
-
+  
 }
-
-
- 
