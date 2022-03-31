@@ -7,7 +7,7 @@
 
 <b>Steps</b>
 
-<li>open serv folder,run make clean then make</li> 
+<li>open serv folder,run make clean then make, note folder named client only used for testing</li> 
 <li>open the folder named serv in two terminals</li>
 
 <li>first terminal: ex ./coms 6000 localhost 7000 or ./coms 6000 127.0.0.1 7000</li>
@@ -15,6 +15,8 @@
 
 <li>terminate on both machines or terminals by typing ! on any machine or terminal</li>
 
-send and receive messges between the two terminal. Same procedure applies to remote machines
+<br></br>
+
+<b>Send and receive messges between the two terminal. Same procedure applies to remote machines</b>
 
 
