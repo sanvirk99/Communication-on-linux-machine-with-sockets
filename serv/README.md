@@ -17,6 +17,6 @@
 
 <br></br>
 
-<b>Send and receive messges between the two terminal. Same procedure applies to remote machines</b>
+<b>Send and receive messges between the two terminal. Same procedure applies to remote machines, remote IP and port is needed</b>
 
 
